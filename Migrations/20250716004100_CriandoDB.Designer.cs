@@ -11,8 +11,8 @@ using ToDoList.Data;
 namespace ToDoList.Migrations
 {
     [DbContext(typeof(AppDbContext))]
-    [Migration("20250715145926_Initial")]
-    partial class Initial
+    [Migration("20250716004100_CriandoDB")]
+    partial class CriandoDB
     {
         /// <inheritdoc />
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
