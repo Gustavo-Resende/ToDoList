@@ -9,6 +9,6 @@ namespace ToDoList.Data
         {
         }
 
-        public DbSet<Tarefa> Tarefas { get; set; } = null!;
+        public DbSet<TarefaModel> Tarefas { get; set; } = null!;
     }
 }
