@@ -13,6 +13,82 @@ namespace ToDoList.Services.Tarefa
             _dbContext = dbContext;
         }
 
+        public async Task<ModelResponse<TarefaModel>> CheckTarefa(int id)
+        {
+            ModelResponse<TarefaModel> response = new ModelResponse<TarefaModel>();
+            try
+            {
+                if (id <= 0)
+                {
+                    response.Status = false;
+                    response.Mensagem = "ID inválido.";
+                    return response;
+                }
+
+                var findTarefa = _dbContext.Set<TarefaModel>().FindAsync(id);
+
+                if (findTarefa == null)
+                {
+                    response.Status = false;
+                    response.Mensagem = "Tarefa não encontrada.";
+                    return response;
+                }
+
+                findTarefa.Result.Status = true;
+                await _dbContext.SaveChangesAsync();
+                response.Status = true;
+                response.Mensagem = "Tarefa marcada com sucesso.";
+                response.Dados = findTarefa.Result;
+
+            }
+            catch (Exception ex)
+            {
+                response.Mensagem = $"Erro ao marcar tarefa: {ex.Message}";
+                response.Status = false;
+                return response;
+            }
+
+            return response;
+        }
+            
+        public async Task<ModelResponse<TarefaModel>> UncheckTarefa(int id)
+        {
+            ModelResponse<TarefaModel> response = new ModelResponse<TarefaModel>();
+            try
+            {
+                if (id <= 0)
+                {
+                    response.Status = false;
+                    response.Mensagem = "ID inválido.";
+                    return response;
+                }
+
+                var findTarefa = _dbContext.Set<TarefaModel>().FindAsync(id);
+
+                if (findTarefa == null)
+                {
+                    response.Status = false;
+                    response.Mensagem = "Tarefa não encontrada.";
+                    return response;
+                }
+
+                findTarefa.Result.Status = false;
+                await _dbContext.SaveChangesAsync();
+                response.Status = true;
+                response.Mensagem = "Tarefa desmarcada com sucesso.";
+                response.Dados = findTarefa.Result;
+
+            }
+            catch (Exception ex)
+            {
+                response.Mensagem = $"Erro ao desmarcar tarefa: {ex.Message}";
+                response.Status = false;
+                return response;
+            }
+
+            return response;
+        }
+
         public async Task<ModelResponse<TarefaModel>> CreateTarefa(string titulo, string descricao)
         {
             ModelResponse<TarefaModel> response = new ModelResponse<TarefaModel>();
@@ -159,6 +235,7 @@ namespace ToDoList.Services.Tarefa
             }
 
         }
+
         public async Task<ModelResponse<TarefaModel>> UpdateTarefa(int id, string titulo, string descricao)
         {
             ModelResponse<TarefaModel> response = new ModelResponse<TarefaModel>();

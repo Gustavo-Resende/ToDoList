@@ -45,6 +45,20 @@ namespace ToDoList.Controllers
             return Ok(response);
         }
 
+        [HttpPut("CheckTarefa")]
+        public async Task<ActionResult<ModelResponse<List<TarefaModel>>>> CheckTarefa(int id)
+        {
+            var response = await _tarefaInterface.CheckTarefa(id);
+            return Ok(response);
+        }
+
+        [HttpPut("UncheckTarefa")]
+        public async Task<ActionResult<ModelResponse<List<TarefaModel>>>> UncheckTarefa(int id)
+        {
+            var response = await _tarefaInterface.UncheckTarefa(id);
+            return Ok(response);
+        }
+
         [HttpDelete("DeleteTarefa")]
         public async Task<ActionResult<ModelResponse<List<TarefaModel>>>> DeleteTarefa(int id)
         {
