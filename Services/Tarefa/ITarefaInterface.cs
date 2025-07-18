@@ -1,15 +1,16 @@
-﻿using ToDoList.Models;
+﻿using ToDoList.Dto.Tarefa;
+using ToDoList.Models;
 
 namespace ToDoList.Services.Tarefa
 {
     public interface ITarefaInterface
     {
-        Task<ModelResponse<TarefaModel>> CreateTarefa(string titulo, string descricao);
+        Task<ModelResponse<TarefaModel>> CreateTarefa(CreateTarefaDto createTarefaDto);
         Task<ModelResponse<List<TarefaModel>>> GetAllTarefa();
         Task<ModelResponse<TarefaModel>> GetTarefaById(int id);
-        Task<ModelResponse<TarefaModel>> UpdateTarefa(int id, string titulo, string descricao);
+        Task<ModelResponse<TarefaModel>> UpdateTarefa(EditTarefaDto editTarefaDto);
         Task<ModelResponse<TarefaModel>> DeleteTarefa(int id);
-        Task<ModelResponse<TarefaModel>> CheckTarefa(int id);
-        Task<ModelResponse<TarefaModel>> UncheckTarefa(int id);
+        Task<ModelResponse<TarefaModel>> CheckTarefa(CheckTarefaDto checkTarefaDto);
+        Task<ModelResponse<TarefaModel>> UncheckTarefa(UnCheckTarefaDto unCheckTarefaDto);
     }
 }

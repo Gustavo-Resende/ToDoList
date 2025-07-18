@@ -1,5 +1,6 @@
 ﻿using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
+using ToDoList.Dto.Tarefa;
 using ToDoList.Models;
 using ToDoList.Services.Tarefa;
 
@@ -18,9 +19,9 @@ namespace ToDoList.Controllers
         
 
         [HttpPost("CreateTarefa")]
-        public async Task<ActionResult<ModelResponse<List<TarefaModel>>>> CreateTarefa(string titulo, string descricao)
+        public async Task<ActionResult<ModelResponse<List<TarefaModel>>>> CreateTarefa(CreateTarefaDto createTarefaDto)
         {
-            var response = await _tarefaInterface.CreateTarefa(titulo, descricao);
+            var response = await _tarefaInterface.CreateTarefa(createTarefaDto);
             return Ok(response);
         }
 
@@ -39,23 +40,23 @@ namespace ToDoList.Controllers
         }
 
         [HttpPut("UpdateTarefa")]
-        public async Task<ActionResult<ModelResponse<List<TarefaModel>>>> UpdateTarefa(int id, string titulo, string descricao)
+        public async Task<ActionResult<ModelResponse<List<TarefaModel>>>> UpdateTarefa(EditTarefaDto editTarefaDto)
         {
-            var response = await _tarefaInterface.UpdateTarefa(id, titulo, descricao);
+            var response = await _tarefaInterface.UpdateTarefa(editTarefaDto);
             return Ok(response);
         }
 
         [HttpPut("CheckTarefa")]
-        public async Task<ActionResult<ModelResponse<List<TarefaModel>>>> CheckTarefa(int id)
+        public async Task<ActionResult<ModelResponse<List<TarefaModel>>>> CheckTarefa(CheckTarefaDto checkTarefaDto)
         {
-            var response = await _tarefaInterface.CheckTarefa(id);
+            var response = await _tarefaInterface.CheckTarefa(checkTarefaDto);
             return Ok(response);
         }
 
         [HttpPut("UncheckTarefa")]
-        public async Task<ActionResult<ModelResponse<List<TarefaModel>>>> UncheckTarefa(int id)
+        public async Task<ActionResult<ModelResponse<List<TarefaModel>>>> UncheckTarefa(UnCheckTarefaDto unCheckTarefaDto)
         {
-            var response = await _tarefaInterface.UncheckTarefa(id);
+            var response = await _tarefaInterface.UncheckTarefa(unCheckTarefaDto);
             return Ok(response);
         }
 
