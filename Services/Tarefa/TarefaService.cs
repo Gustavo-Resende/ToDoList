@@ -1,6 +1,7 @@
 ﻿using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using ToDoList.Data;
+using ToDoList.Dto.Tarefa;
 using ToDoList.Models;
 
 namespace ToDoList.Services.Tarefa
@@ -13,19 +14,19 @@ namespace ToDoList.Services.Tarefa
             _dbContext = dbContext;
         }
 
-        public async Task<ModelResponse<TarefaModel>> CheckTarefa(int id)
+        public async Task<ModelResponse<TarefaModel>> CheckTarefa(CheckTarefaDto checkTarefaDto)
         {
             ModelResponse<TarefaModel> response = new ModelResponse<TarefaModel>();
             try
             {
-                if (id <= 0)
+                if (checkTarefaDto.Id <= 0)
                 {
                     response.Status = false;
                     response.Mensagem = "ID inválido.";
                     return response;
                 }
 
-                var findTarefa = _dbContext.Set<TarefaModel>().FindAsync(id);
+                var findTarefa = _dbContext.Set<TarefaModel>().FindAsync(checkTarefaDto.Id);
 
                 if (findTarefa == null)
                 {
@@ -51,19 +52,19 @@ namespace ToDoList.Services.Tarefa
             return response;
         }
             
-        public async Task<ModelResponse<TarefaModel>> UncheckTarefa(int id)
+        public async Task<ModelResponse<TarefaModel>> UncheckTarefa(UnCheckTarefaDto unCheckTarefaDto)
         {
             ModelResponse<TarefaModel> response = new ModelResponse<TarefaModel>();
             try
             {
-                if (id <= 0)
+                if (unCheckTarefaDto.Id <= 0)
                 {
                     response.Status = false;
                     response.Mensagem = "ID inválido.";
                     return response;
                 }
 
-                var findTarefa = _dbContext.Set<TarefaModel>().FindAsync(id);
+                var findTarefa = _dbContext.Set<TarefaModel>().FindAsync(unCheckTarefaDto.Id);
 
                 if (findTarefa == null)
                 {
@@ -89,20 +90,13 @@ namespace ToDoList.Services.Tarefa
             return response;
         }
 
-        public async Task<ModelResponse<TarefaModel>> CreateTarefa(string titulo, string descricao)
+        public async Task<ModelResponse<TarefaModel>> CreateTarefa(CreateTarefaDto createTarefaDto)
         {
             ModelResponse<TarefaModel> response = new ModelResponse<TarefaModel>();
 
             try
             {
-                if (string.IsNullOrEmpty(titulo) && string.IsNullOrEmpty(descricao))
-                {
-                    response.Status = false;
-                    response.Mensagem = "Título e descrição não podem ser nulos.";
-                    return response;
-                }
-
-                var findTarefa = await _dbContext.Set<TarefaModel>().FirstOrDefaultAsync(t => t.Titulo == titulo);
+                var findTarefa = await _dbContext.Set<TarefaModel>().FirstOrDefaultAsync(t => t.Titulo == createTarefaDto.Titulo);
 
                 if (findTarefa != null)
                 {
@@ -111,7 +105,13 @@ namespace ToDoList.Services.Tarefa
                     return response;
                 }
 
-                TarefaModel tarefa = new TarefaModel { Titulo = titulo, Descricao = descricao };
+                var tarefa = new TarefaModel
+                {
+
+                    Descricao = createTarefaDto.Descricao,
+                    Titulo = createTarefaDto.Titulo
+                };
+
                 await _dbContext.Set<TarefaModel>().AddAsync(tarefa);
                 await _dbContext.SaveChangesAsync();
 
@@ -236,20 +236,20 @@ namespace ToDoList.Services.Tarefa
 
         }
 
-        public async Task<ModelResponse<TarefaModel>> UpdateTarefa(int id, string titulo, string descricao)
+        public async Task<ModelResponse<TarefaModel>> UpdateTarefa(EditTarefaDto editTarefaDto)
         {
             ModelResponse<TarefaModel> response = new ModelResponse<TarefaModel>();
 
             try
             {
-                if (id <= 0)
+                if (editTarefaDto.Id <= 0)
                 {
                     response.Status = false;
                     response.Mensagem = "ID inválido.";
                     return response;
                 }
 
-                var findTarefa = await _dbContext.Set<TarefaModel>().FindAsync(id);
+                var findTarefa = await _dbContext.Set<TarefaModel>().FindAsync(editTarefaDto.Id);
 
                 if (findTarefa == null)
                 {
@@ -259,8 +259,8 @@ namespace ToDoList.Services.Tarefa
                 }
 
 
-                findTarefa.Titulo = titulo;
-                findTarefa.Descricao = descricao;
+                findTarefa.Titulo = editTarefaDto.Titulo;
+                findTarefa.Descricao = editTarefaDto.Descricao;
                 _dbContext.Set<TarefaModel>().Update(findTarefa);
                 await _dbContext.SaveChangesAsync();
 
