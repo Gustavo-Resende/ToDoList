@@ -9,5 +9,7 @@ namespace ToDoList.Services.Tarefa
         Task<ModelResponse<TarefaModel>> GetTarefaById(int id);
         Task<ModelResponse<TarefaModel>> UpdateTarefa(int id, string titulo, string descricao);
         Task<ModelResponse<TarefaModel>> DeleteTarefa(int id);
+        Task<ModelResponse<TarefaModel>> CheckTarefa(int id);
+        Task<ModelResponse<TarefaModel>> UncheckTarefa(int id);
     }
 }
